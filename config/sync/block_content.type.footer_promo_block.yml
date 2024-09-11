@@ -1,0 +1,10 @@
+uuid: 9e5ea59a-21bc-41b2-ba89-fb6e79f21694
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 5B0WCCKOBdOYZxfM-iLEYNnOkuRD_dV5oEESAQOBvGA
+id: footer_promo_block
+label: 'Footer promo block'
+revision: false
+description: 'A footer promo block contains a title, promo text, and a "find out more" link.'

@@ -1,0 +1,24 @@
+name: umami
+recipe: drupal10
+config:
+  webroot: web
+
+services:
+  python:
+    type: python:3.11
+    build_as_root:
+      - apt update
+      - apt install python3-pip -y
+      - pip install --upgrade pip
+      - pip install locust beautifulsoup4
+    moreHttpPorts:
+      - 8089    
+    overrides:
+      ports:
+        - 8089
+
+tooling:
+  locust:
+    service: python
+    cmd: locust  
+
