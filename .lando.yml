@@ -20,5 +20,7 @@ services:
 tooling:
   locust:
     service: python
-    cmd: locust  
 
+  python:
+    service: python
+    cmd: python3  
