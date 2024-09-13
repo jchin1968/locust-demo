@@ -26,6 +26,9 @@ def fetch_static_assets(session, response):
 
 
 class LoadTest(HttpUser):
+
+  # Assume user pauses between 1 and 3 seconds between pages
+  wait_time = between(1,3)
   
   def on_start(self):
     """Read list of URLs that will be randomly accessed by each user"""
@@ -70,7 +73,4 @@ class LoadTest(HttpUser):
     index = randrange(self.count)
     response = self.client.get(self.urls[index])
     fetch_static_assets(self, response) 
-
-  # Assume user pauses between 1 and 3 seconds between pages
-  wait_time = between(1,3)
 
