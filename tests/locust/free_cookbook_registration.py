@@ -39,10 +39,10 @@ class RegistrationTest(HttpUser):
       'form_id': 'webform_submission_cookbook_registration_add_form', 
       'op': 'Submit'
     })
-    print(resp)
-    print(drupal_form_id)
-    while True:
-      pass
+    #print(resp)
+    #print(drupal_form_id)
+    #while True:
+    #  pass
 
 if __name__ == "__main__":
   run_single_user(RegistrationTest)
