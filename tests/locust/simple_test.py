@@ -2,11 +2,11 @@ from locust import HttpUser, task, between
 class SimpleTest(HttpUser):
   wait_time = between(1,3)
     
-  @task
+  @task(9)
   def homepage(self):
     self.client.get("/")
 
-  @task
+  @task(1)
   def contact(self):
     self.client.get("/contact")
     
