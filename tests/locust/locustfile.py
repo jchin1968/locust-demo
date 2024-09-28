@@ -70,7 +70,7 @@ class LoadTest(HttpUser):
     """A few users will register for a free cookbook"""
 
     # Visit registration page and get form build id.
-    response = self.client.get("/free-cookbook", name="register")
+    response = self.client.get("/free-cookbook")
     fetch_static_assets(self, response) 
     soup = BeautifulSoup(response.text, "html.parser")
     drupal_form_id = soup.select('input[name="form_build_id"]')[0]["value"]
@@ -96,5 +96,5 @@ class LoadTest(HttpUser):
       'address[country]': 'Singapore',
       'form_id': 'webform_submission_cookbook_registration_add_form',
       'op': 'Submit'
-    })
+    }, name="(registration)")
     
