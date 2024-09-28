@@ -19,7 +19,7 @@ proxy:
 tooling:
   locust:
     service: python
-    cmd: locust -P 80 -H http://umami.lndo.site
+    cmd: locust -P 80 -H http://umami.lndo.site -u 10
 
   python:
     service: python
