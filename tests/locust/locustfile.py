@@ -1,14 +1,7 @@
 from locust import HttpUser, task, between
 from bs4 import BeautifulSoup
+from helper import is_static_file, random_string
 import random
-import string
-
-def is_static_file(file):
-  matches = ['/sites/default/files', '/themes/']
-  if any(x in file for x in matches):
-    return True
-  else:
-    return False
 
 def fetch_static_assets(session, response):
   """Determine if a URL in the web page is a static asset and should be downloaded."""
@@ -24,10 +17,6 @@ def fetch_static_assets(session, response):
 
   for url in set(resource_urls):
     session.client.get(url, name="(Static File)")
-
-def random_string(length=8):
-  random_string = ''.join(random.choices(string.ascii_letters, k=length))
-  return str(random_string)
 
 
 class LoadTest(HttpUser):
