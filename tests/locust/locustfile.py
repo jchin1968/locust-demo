@@ -1,25 +1,10 @@
 from locust import HttpUser, task, between
 from bs4 import BeautifulSoup
-from helper import is_static_file, random_string
+from helper import fetch_static_assets, random_string
 import random
 
-def fetch_static_assets(session, response):
-  """Determine if a URL in the web page is a static asset and should be downloaded."""
-  resource_urls = set()
-  soup = BeautifulSoup(response.text, "html.parser")
-
-  for res in soup.find_all(src=True):
-    url = res['src']
-    if is_static_file(url):
-      resource_urls.add(url)
-    else:
-      print(f'Skipping: {url}')
-
-  for url in set(resource_urls):
-    session.client.get(url, name="(Static File)")
-
-
 class LoadTest(HttpUser):
+  """General load tests from anonymous users."""
 
   # Assume user pauses between 1 and 3 seconds between pages
   wait_time = between(1,3)
