@@ -49,16 +49,16 @@ class AdminTasks(HttpUser):
 
     form_elements = soup.find('form', attrs={'id': 'node-article-form'})
     form_build_id = form_elements.find('input', {'name': 'form_build_id'})['value']
+    form_token = form_elements.find('input', {'name': 'form_token'})['value']
 
     # Login submission
     response = self.client.post("/node/add/article", {
-        "edit-title-0-value": random_string(30),
-        "edit-moderation-state-0-state": 'Published',
+        "title[0][value]": random_string(30),
         "form_id": "node_article_form",
+        "form_token": form_token,
         "form_build_id": form_build_id,
         "op": "Save"
     })
-
 
   @task(1)
   def clear_cache(self):
