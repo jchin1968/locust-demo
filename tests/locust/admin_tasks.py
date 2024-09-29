@@ -1,11 +1,13 @@
-from locust import HttpUser, task, between
+from locust import HttpUser, task
 from locust.exception import StopUser
 from bs4 import BeautifulSoup
 from helper import fetch_static_assets, random_string
+from time import sleep
+import re
 
 class AdminTasks(HttpUser):
   """General tasks by an admin user."""
-  #fixed_count = 1
+  fixed_count = 1
 
   def on_start(self):
     """Login as admin before running tasks."""
@@ -28,20 +30,17 @@ class AdminTasks(HttpUser):
     # Redirect to homepage after successful login
     response = self.client.get("/")
     fetch_static_assets(self, response)
-    #content = BeautifulSoup(response.content, 'html.parser')
-    #form_build_id = content.body.find('input', {'name': 'form_build_id'})['value']
-
-    #for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')):
-    #  if link.has_attr('href'):
-    #    print(link['href'])
+    content = BeautifulSoup(response.content, 'html.parser')
+    self.logout_link = content.body.find('a', href=re.compile('user/logout\?token='))['href']
 
   @task
   def admin_page(self):
+    sleep(30)
     response = self.client.get("/admin")
     fetch_static_assets(self, response)
     raise StopUser()
 
   def on_stop(self):
     """Logout after test is complete"""
-    self.client.get("/user/logout") 
+    self.client.get(self.logout_link) 
 
