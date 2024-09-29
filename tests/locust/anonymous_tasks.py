@@ -8,14 +8,14 @@ class AnonymousTasks(HttpUser):
 
   # Assume user pauses between 1 and 3 seconds between pages
   wait_time = between(1,3)
-  
+
   def on_start(self):
     """Read list of URLs that will be randomly accessed by each user"""
     filename = 'urls.txt'
     try:
       with open(filename, 'r') as file:
         self.urls = [line.strip() for line in file]
-        self.count = len(self.urls) 
+        self.count = len(self.urls)
     except FileNotFoundError:
         print(f"File {filename} does not exist.")
 
@@ -23,21 +23,21 @@ class AnonymousTasks(HttpUser):
   def homepage(self):
     """Most users go to the home page"""
     response = self.client.get("/")
-    fetch_static_assets(self, response) 
+    fetch_static_assets(self, response)
 
   @task(50)
   def page_2(self):
     """Some users will visit a 2nd random page"""
     index = random.randrange(self.count)
     response = self.client.get(self.urls[index])
-    fetch_static_assets(self, response) 
+    fetch_static_assets(self, response)
 
   @task(25)
   def page_3(self):
     """Fewer Users will visit a 3rd random page"""
     index = random.randrange(self.count)
     response = self.client.get(self.urls[index])
-    fetch_static_assets(self, response) 
+    fetch_static_assets(self, response)
 
   @task(10)
   def register(self):
@@ -45,9 +45,9 @@ class AnonymousTasks(HttpUser):
 
     # Visit registration page and get form build id.
     response = self.client.get("/free-cookbook")
-    fetch_static_assets(self, response) 
-    soup = BeautifulSoup(response.text, "html.parser")
-    drupal_form_id = soup.select('input[name="form_build_id"]')[0]["value"]
+    fetch_static_assets(self, response)
+    content = BeautifulSoup(response.content, 'html.parser')
+    form_build_id = content.body.find('input', {'name': 'form_build_id'})['value']
 
     # Generate random strings
     first_name = random_string()
@@ -59,7 +59,7 @@ class AnonymousTasks(HttpUser):
 
     # Submit form
     resp = self.client.post("/free-cookbook", {
-      'form_build_id': drupal_form_id,
+      'form_build_id': form_build_id,
       'first_name': first_name,
       'last_name': last_name,
       'email': email,
@@ -71,4 +71,4 @@ class AnonymousTasks(HttpUser):
       'form_id': 'webform_submission_cookbook_registration_add_form',
       'op': 'Submit'
     }, name="(registration)")
-    
+
