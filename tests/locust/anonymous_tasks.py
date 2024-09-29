@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from helper import fetch_static_assets, random_string
 import random
 
-class LoadTest(HttpUser):
+class AnonymousTasks(HttpUser):
   """General load tests from anonymous users."""
 
   # Assume user pauses between 1 and 3 seconds between pages
