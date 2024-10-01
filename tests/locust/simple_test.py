@@ -6,7 +6,10 @@ class SimpleTest(HttpUser):
   def homepage(self):
     self.client.get("/")
 
-  @task(1)
+  @task(8)
+  def recipes(self):
+    self.client.get("/recipes")
+    
+  @task(3)
   def contact(self):
     self.client.get("/contact")
-    
